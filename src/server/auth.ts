@@ -8,6 +8,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "@/env/server.mjs";
 import { prisma } from "@/server/db";
+import {generateUsername} from '@/utils/generateUsername';
+
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,6 +37,13 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+
+interface Profile {
+  sub: string;
+  name:string;
+  email: string;
+  picture: string;
+}
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
@@ -50,6 +59,15 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      profile(profile:Profile){
+        return {
+          id: profile.sub,
+          name:profile.name,
+          email:profile.email,
+          image:profile.picture,
+          username: generateUsername(profile.name)
+        }
+      }
     }),
     /**
      * ...add more providers here.

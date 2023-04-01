@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -50,11 +50,20 @@ model Session {
 model User {
     id            String    @id @default(cuid())
     name          String?
+    username      String    @unique
     email         String?   @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    posts         Post[]
+
+    tags       Tag[]
+    comments   Comment[]
+    likes      Like[]
+    bookmarks  Bookmark[]
+    followedBy User[]     @relation("UserFollows")
+    followings User[]     @relation("UserFollows")
 }
 
 model VerificationToken {
@@ -63,4 +72,86 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// Our tables/models
+model Post {
+    id            String  @id @default(cuid())
+    title         String  @unique
+    description   String  @db.Text
+    slug          String  @unique
+    featuredImage String?
+
+    html String? @db.Text
+    text String? @db.Text
+
+    authorId String
+    author   User   @relation(fields: [authorId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    tags      Tag[]
+    comments  Comment[]
+    likes     Like[]
+    bookmarks Bookmark[]
+
+    @@index([authorId])
+}
+
+model Tag {
+    id          String  @id @default(cuid())
+    name        String  @unique
+    descritpion String? @db.Text
+    slug        String
+    posts       Post[]
+    User        User?   @relation(fields: [userId], references: [id])
+    userId      String?
+}
+
+model Comment {
+    id String @id @default(cuid())
+
+    text String @db.Text
+
+    userId String
+    postId String
+    user   User   @relation(fields: [userId], references: [id])
+    post   Post   @relation(fields: [postId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId])
+    @@index([postId])
+}
+
+model Like {
+    id String @id @default(cuid())
+
+    userId String
+    postId String
+    user   User   @relation(fields: [userId], references: [id])
+    post   Post   @relation(fields: [postId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([userId, postId])
+    @@index([postId])
+}
+
+model Bookmark {
+    id String @id @default(cuid())
+
+    userId String
+    postId String
+    user   User   @relation(fields: [userId], references: [id])
+    post   Post   @relation(fields: [postId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([userId, postId])
+    @@index([postId])
 }

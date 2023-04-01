@@ -1,0 +1,1 @@
+Start superbase without health error: supabase start --ignore-health-check

@@ -11,10 +11,10 @@ type GlobalContextType = {
   setIsWriteModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export const GlobalContext = createContext<GlobalContextType>({
-  isWriteModalOpen: false,
-  setIsWriteModalOpen: () => false,
-});
+export const GlobalContext = createContext<{
+  isWriteModalOpen: boolean;
+  setIsWriteModalOpen: Dispatch<SetStateAction<boolean>>;
+}>(null as unknown as GlobalContextType);
 
 const GlobalContextProvider = ({ children }: PropsWithChildren) => {
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
