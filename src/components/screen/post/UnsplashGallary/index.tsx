@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useDebounce } from "usehooks-ts";
 import { api } from "@/utils/api";
-import Modal from "../modal";
+import Modal from "../../../modal";
 import { z } from "zod";
 import { BiLoaderAlt } from "react-icons/bi";
 import { SetStateAction, useState, Dispatch, FC } from "react";
@@ -113,3 +113,5 @@ const UnsplashGallery: FC<UnsplashGallaryProps> = ({
     </Modal>
   );
 };
+
+export default UnsplashGallery;

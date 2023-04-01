@@ -2,7 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { createApi } from "unsplash-js"
 import {env} from "@/env/server.mjs";
 import {TRPCError} from "@trpc/server";
-import {unsplashSearchRouterSchema} from "@/components/UnsplashGallary";
+import {unsplashSearchRouterSchema} from "@/components/screen/post/UnsplashGallary";
 
 const unsplash = createApi({
     accessKey: env.UNSPLASH_API_ACCESS_KEY 

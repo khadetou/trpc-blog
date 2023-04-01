@@ -6,8 +6,10 @@ import { api } from "@/utils/api";
 import Layout from "@/components/Layout";
 import MainSection from "@/components/screen/home/main";
 import SideSection from "@/components/screen/home/sidesection";
+import WriteFormModal from "@/components/screen/home/writeFormModal";
+
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
     <Layout>
@@ -15,6 +17,7 @@ const Home: NextPage = () => {
         <MainSection />
         <SideSection />
       </section>
+      <WriteFormModal />
     </Layout>
   );
 };

@@ -3,7 +3,7 @@ import { HiChevronDown } from "react-icons/hi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { api } from "@/utils/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import Post from "./Post";
+import Post from "./post";
 import { BiLoaderCircle } from "react-icons/bi";
 
 const MainSection = () => {
